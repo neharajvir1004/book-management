@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book Management</title>
+  <!-- Fonts are optional: if you are offline the page falls back to Georgia / system fonts. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Book Management</h1>
+      <p>Add, find and track the books in your collection.</p>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+    <!-- Add / Edit form -->
+    <section class="panel form-panel" aria-labelledby="formTitle">
+      <h2 id="formTitle">Add a new book</h2>
+
+      <form id="bookForm" novalidate>
+        <div class="field">
+          <label for="title">Title</label>
+          <input id="title" name="title" type="text" maxlength="200" required placeholder="Python Crash Course">
+        </div>
+        <div class="field">
+          <label for="author">Author</label>
+          <input id="author" name="author" type="text" maxlength="200" required placeholder="Eric Matthes">
+        </div>
+        <div class="field">
+          <label for="category">Category</label>
+          <input id="category" name="category" type="text" maxlength="200" required placeholder="Programming">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="year">Year</label>
+            <input id="year" name="publication_year" type="number" min="1" step="1" inputmode="numeric" placeholder="2023 (optional)">
+          </div>
+          <div class="field">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+              <option value="Available">Available</option>
+              <option value="Issued">Issued</option>
+            </select>
+          </div>
+        </div>
+
+        <p id="formError" class="form-error" role="alert" hidden></p>
+
+        <div class="form-actions">
+          <button type="submit" id="submitBtn" class="btn btn-primary">Add book</button>
+          <button type="button" id="cancelBtn" class="btn btn-ghost" hidden>Cancel edit</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Search, filter and book list -->
+    <section class="list-panel" aria-label="Book collection">
+      <div class="toolbar">
+        <div class="search-box">
+          <label for="searchInput" class="visually-hidden">Search books</label>
+          <input id="searchInput" type="search" placeholder="Search by title, author or category">
+        </div>
+        <div class="filter" role="group" aria-label="Filter by status">
+          <button type="button" class="filter-btn is-active" data-status="All" aria-pressed="true">All</button>
+          <button type="button" class="filter-btn" data-status="Available" aria-pressed="false">Available</button>
+          <button type="button" class="filter-btn" data-status="Issued" aria-pressed="false">Issued</button>
+        </div>
+      </div>
+
+      <p id="resultCount" class="result-count" aria-live="polite"></p>
+
+      <ul id="bookList" class="book-list"></ul>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <h3 id="emptyTitle"></h3>
+        <p id="emptyText"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Delete confirmation -->
+  <dialog id="deleteDialog" aria-labelledby="deleteTitle">
+    <h3 id="deleteTitle">Delete this book?</h3>
+    <p id="deleteText"></p>
+    <div class="dialog-actions">
+      <button type="button" id="deleteCancel" class="btn btn-ghost">Keep book</button>
+      <button type="button" id="deleteConfirm" class="btn btn-danger">Delete book</button>
+    </div>
+  </dialog>
+
+  <!-- Success / error messages -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
